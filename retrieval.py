@@ -136,7 +136,7 @@ def spawn_all_retrievals(save_dir,
 
 def experiment1():
     save_dir = "results/experiment1"
-    max_processes = 5
+    max_processes = 40
 
     # This is the "signal"
     FpFs_err = 3.55e-10
