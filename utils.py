@@ -196,14 +196,14 @@ def make_rfast_from_clima(template_filename, c, distance_au,
     r = Rfast(tmp_scr_outfile)
     return r
 
-def make_data(c, N_i, distance_au, T_surf, N_CO2_guess, T_trop_guess, 
-              template_filename, SNR, FpFs_err):
+def make_data_temperature_experiment(c, T_surf, P_i, P_surf, bg_gas, 
+                                     template_filename, SNR, FpFs_err):
 
-    # Find stable climate
-    N_CO2 = find_CO2_for_stable_climate(c, N_i, distance_au, T_surf, N_CO2_guess, T_trop_guess)
+    # Construct atmosphere
+    c.make_profile_bg_gas(T_surf, P_i, P_surf, bg_gas)
 
     # make rfast from clima results
-    r = make_rfast_from_clima(template_filename, c, distance_au)
+    r = make_rfast_from_clima(template_filename, c, 1.0)
 
     # compute the spectrum
     F1, F2 = r.genspec_scr()
