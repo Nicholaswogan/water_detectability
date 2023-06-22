@@ -16,13 +16,14 @@ r.initialize_retrieval("input/rpars.txt")
 
 def spawn_retrieval(save_dir,
                     c, T_surf, P_i, P_surf, bg_gas,
-                    SNR, FpFs_err):
+                    SNR, FpFs_err, tmp_atmosphere_outfile, tmp_scr_outfile):
 
     filename = save_dir+'/'+'Ts='+('%.5f'%(T_surf))+'_SNR='+('%.5f'%(SNR))
 
     # make fake data
     dat, err = utils.make_data_temperature_experiment(c, T_surf, P_i, P_surf, bg_gas, 
-                                                      TEMPLATE_FILENAME, SNR, FpFs_err)
+                                                      TEMPLATE_FILENAME, SNR, FpFs_err,
+                                                      tmp_atmosphere_outfile, tmp_scr_outfile)
     
     # save the data
     sol = {}
@@ -44,7 +45,7 @@ def spawn_retrieval(save_dir,
 def spawn_all_retrievals(save_dir, 
                          c, T_surfs, P_i, P_surf, bg_gas, 
                          SNRs, FpFs_err,
-                         max_processes):
+                         max_processes, tmp_atmosphere_outfile, tmp_scr_outfile):
 
     if not os.path.isdir(save_dir):
         raise Exception(save_dir+' must exist!')
@@ -73,7 +74,8 @@ def spawn_all_retrievals(save_dir,
         if ii < len(SNRs) and nr < max_processes-2:
             spawn_retrieval(save_dir,
                             c, T_surfs[ii], P_i, P_surf, bg_gas,
-                            SNRs[ii], FpFs_err)
+                            SNRs[ii], FpFs_err,
+                            tmp_atmosphere_outfile, tmp_scr_outfile)
             ii+=1
 
         finish = time.time()
@@ -91,7 +93,9 @@ def spawn_all_retrievals(save_dir,
 def experiment1():
     save_dir = "results/experiment1"
     max_processes = 40
-
+    tmp_atmosphere_outfile = 'tmp12345_atmosphere_1.txt'
+    tmp_scr_outfile = 'tmp12345_1.scr'
+    
     # This is the "signal"
     FpFs_err = 3.55e-10
 
@@ -126,7 +130,7 @@ def experiment1():
     spawn_all_retrievals(save_dir, 
                          c, T_surfs, P_i, P_surf, bg_gas, 
                          SNRs, FpFs_err,
-                         max_processes)
+                         max_processes, tmp_atmosphere_outfile, tmp_scr_outfile)
     
 if __name__ == '__main__':
     experiment1()

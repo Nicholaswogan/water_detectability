@@ -197,13 +197,15 @@ def make_rfast_from_clima(template_filename, c, distance_au,
     return r
 
 def make_data_temperature_experiment(c, T_surf, P_i, P_surf, bg_gas, 
-                                     template_filename, SNR, FpFs_err):
+                                     template_filename, SNR, FpFs_err,
+                                     tmp_atmosphere_outfile='tmp12345_atmosphere.txt', 
+                                     tmp_scr_outfile='tmp12345.scr'):
 
     # Construct atmosphere
     c.make_profile_bg_gas(T_surf, P_i, P_surf, bg_gas)
 
     # make rfast from clima results
-    r = make_rfast_from_clima(template_filename, c, 1.0)
+    r = make_rfast_from_clima(template_filename, c, 1.0, tmp_atmosphere_outfile, tmp_scr_outfile)
 
     # compute the spectrum
     F1, F2 = r.genspec_scr()
