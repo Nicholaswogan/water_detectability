@@ -18,7 +18,7 @@ def spawn_retrieval(save_dir,
                     c, T_surf, fCH4, f_i, P_surf, bg_gas,
                     SNR, FpFs_err, tmp_atmosphere_outfile, tmp_scr_outfile):
 
-    filename = save_dir+'/'+'Ts='+('%.5f'%(T_surf))+'_SNR='+('%.5f'%(SNR))
+    filename = save_dir+'/'+'Ts='+('%.5f'%(T_surf))+'_SNR='+('%.5f'%(SNR))+'_fCH4='+('%.5e'%(fCH4))
 
     f_i[c.species_names.index('CH4')] = fCH4
     P_i = f_i*P_surf
