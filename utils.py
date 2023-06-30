@@ -216,3 +216,24 @@ def make_data_temperature_experiment(c, T_surf, P_i, P_surf, bg_gas,
     dat, err = r.noise_at_FpFs(F2, FpFs_err)
 
     return dat, err
+
+def make_data_hz_experiment(c, T_surf, N_i, distance_au, N_CO2_guess, T_trop_guess,
+                            template_filename, SNR, FpFs_err,
+                            tmp_atmosphere_outfile='tmp12345_atmosphere.txt', 
+                            tmp_scr_outfile='tmp12345.scr'):
+
+    # Construct atmosphere
+    N_CO2 = find_CO2_for_stable_climate(c, N_i, distance_au, T_surf, N_CO2_guess, T_trop_guess)
+
+    # make rfast from clima results
+    r = make_rfast_from_clima(template_filename, c, distance_au, tmp_atmosphere_outfile, tmp_scr_outfile)
+
+    # compute the spectrum
+    F1, F2 = r.genspec_scr()
+
+    # set SNR and generate data
+    assert r.scr.snr0.shape[0] == 1 
+    r.scr.snr0 = np.array([SNR])
+    dat, err = r.noise_at_FpFs(F2, FpFs_err)
+
+    return dat, err
